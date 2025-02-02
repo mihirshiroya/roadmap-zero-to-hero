@@ -38,7 +38,7 @@ if (process.env.NODE_ENV === 'production') {
   // Serve static files with proper MIME types
   app.use(express.static(path.join(__dirname, '../frontend/dist'), {
     setHeaders: (res, path) => {
-      const type = mime.getType(path);
+      const type = mime.lookup(path);
       if (type) {
         res.setHeader('Content-Type', type);
       }
