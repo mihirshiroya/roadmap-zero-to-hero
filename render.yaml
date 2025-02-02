@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: roadmap-zero-to-hero
+    env: node
+    buildCommand: ./render-build.sh
+    startCommand: npm start --prefix backend
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        required: true
+      - key: CLERK_SECRET_KEY
+        required: true
+      - key: QUIZ_API_KEY
+        required: true
+      - key: VITE_CLERK_PUBLISHABLE_KEY
+        required: true
+      - key: CLERK_WEBHOOK_SECRET
+        required: true 
