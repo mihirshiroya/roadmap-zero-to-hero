@@ -91,6 +91,11 @@ export const projectsData = {
   },
 }
 
+export const allProjects = Object.values(projectsData)
+  .flatMap(category => 
+    Object.values(category).flatMap(difficulty => difficulty)
+  );
+
 export default function Projects() {
   const [activeCategory, setActiveCategory] = useState("frontend")
   const [activeDifficulty, setActiveDifficulty] = useState("easy")

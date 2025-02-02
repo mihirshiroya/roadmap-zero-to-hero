@@ -65,9 +65,7 @@ export default function Overview() {
     ...projectsData.backend.hard,
   ];
 
-  const projects = allProjects
-    .sort(() => 0.5 - Math.random())
-    .slice(0, Math.floor(Math.random() * 6) + 5); // Random 5-10 projects
+  const projects = [...allProjects] // Create a copy to avoid mutation
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
