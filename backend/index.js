@@ -23,14 +23,45 @@ const PORT = process.env.PORT || 5000;
 const clerk = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 
 // Middleware
-app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://roadmap-zero-to-hero.onrender.com'] 
-    : '*',
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+// app.use(cors({
+//   origin: process.env.NODE_ENV === 'production' 
+//     ? 'https://roadmap-zero-to-hero.onrender.com' 
+//     : ['http://localhost:5173', 'http://127.0.0.1:5173'],
+//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+//   allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+//   credentials: true
+// }));
+
+// Uncomment and modify the production static serving block
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from frontend
+  app.use(express.static(path.join(__dirname, '../frontend/dist'), {
+    setHeaders: (res) => {
+      res.setHeader('Content-Type', 'text/javascript');
+    }
+  }));
+  
+  // Handle client-side routing - should be AFTER all API routes
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
+
+// Modify CORS configuration to be conditional
+app.use(cors(process.env.NODE_ENV === 'production' ? {
+  origin: 'https://roadmap-zero-to-hero.onrender.com',
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+  credentials: true
+} : {
+  origin: '*',
+  methods: '*',
+  allowedHeaders: '*',
+  optionsSuccessStatus: 204
 }));
+
+// Add this after CORS setup but before routes
+app.options('*', cors()); // Handle ALL OPTIONS requests
 
 // Webhook middleware FIRST before any body parsing
 app.use((req, res, next) => {
@@ -57,17 +88,6 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
-
-// Add this AFTER MongoDB connection setup and BEFORE routes
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files from frontend
-  app.use(express.static(path.join(__dirname, '../frontend/dist')));
-  
-  // Handle client-side routing - should be AFTER all API routes
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
-}
 
 // Routes
 app.use('/api/users', userRoutes);
