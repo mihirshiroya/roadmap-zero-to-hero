@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from "react"
+import React, { Fragment, useState, useEffect, useMemo } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import {
   Bars3Icon,
@@ -21,7 +21,7 @@ import Progress from "../ui/Progress";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/Card";
 import { CheckCircle } from 'lucide-react';
 import  Button  from '../ui/Button';
-import { projectsData } from './Projects';
+import { allProjects } from './Projects';
 
 export default function Overview() {
   const dispatch = useDispatch();
@@ -56,16 +56,25 @@ export default function Overview() {
   if (loading) return <LoadingSpinner />;
   if (error) return <div className="text-error">Error loading roadmaps: {error}</div>;
 
-  const allProjects = [
-    ...projectsData.frontend.easy,
-    ...projectsData.frontend.medium,
-    ...projectsData.frontend.hard,
-    ...projectsData.backend.easy,
-    ...projectsData.backend.medium,
-    ...projectsData.backend.hard,
-  ];
+  // First check if data is valid
+  if (!Array.isArray(allProjects)) {
+    return (
+      <div className="p-4 text-red-500">
+        Error: Projects data failed to load. Please refresh the page.
+      </div>
+    );
+  }
 
-  const projects = [...allProjects] // Create a copy to avoid mutation
+  // Memoize the project selection
+  const projects = useMemo(() => {
+    try {
+      const shuffled = [...allProjects].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, Math.floor(Math.random() * 6) + 5);
+    } catch (error) {
+      console.error('Project selection error:', error);
+      return [];
+    }
+  }, []); // Empty array ensures this runs once
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
