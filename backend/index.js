@@ -26,8 +26,10 @@ const clerk = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 app.use(cors({
   origin: process.env.NODE_ENV === 'production' 
     ? ['https://roadmap-zero-to-hero.onrender.com'] 
-    : 'http://localhost:5173',
-  credentials: true
+    : '*',
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Webhook middleware FIRST before any body parsing

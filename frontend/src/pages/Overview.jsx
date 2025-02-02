@@ -20,7 +20,7 @@ import { useLocation, Link, useNavigate } from "react-router-dom"
 import Progress from "../ui/Progress";
 import { Card, CardHeader, CardTitle, CardContent } from "../ui/Card";
 import { CheckCircle } from 'lucide-react';
-import  Button  from '../ui/Button';
+import Button from '../ui/Button';
 import { allProjects } from './Projects';
 
 export default function Overview() {
@@ -29,8 +29,10 @@ export default function Overview() {
   const navigate = useNavigate();
   const [selectedTopic, setSelectedTopic] = useState(null);
   
-  // Memoize the project selection FIRST
+  // Memoize the project selection
   const projects = useMemo(() => {
+    if (!Array.isArray(allProjects)) return [];
+    
     try {
       const shuffled = [...allProjects].sort(() => 0.5 - Math.random());
       return shuffled.slice(0, Math.floor(Math.random() * 6) + 5);
@@ -47,20 +49,13 @@ export default function Overview() {
   if (loading) return <LoadingSpinner />;
   if (error) return <div className="text-error">Error loading roadmaps: {error}</div>;
 
-  // Move array check AFTER hooks
-  if (!Array.isArray(allProjects)) {
-    return (
-      <div className="p-4 text-red-500">
-        Error: Projects data failed to load. Please refresh the page.
-      </div>
-    );
-  }
-
-  // Filter ongoing roadmaps (progress > 0% and < 100%)
-  const ongoingRoadmaps = roadmaps?.filter(roadmap => {
-    const progress = roadmap.progress?.percentage || 0;
-    return progress > 0 && progress < 100;
-  }) || [];
+  // Ensure roadmaps is an array before filtering
+  const ongoingRoadmaps = Array.isArray(roadmaps) 
+    ? roadmaps.filter(roadmap => {
+        const progress = roadmap?.progress?.percentage ?? 0;
+        return progress > 0 && progress < 100;
+      })
+    : [];
 
   const topics = [
     { id: 'HTML', name: 'HTML', icon: '🌐' },
@@ -75,6 +70,15 @@ export default function Overview() {
   const handleDifficultySelect = (difficulty) => {
     navigate(`/quiz/${selectedTopic.id}/${difficulty}`);
   };
+
+  // Check if projects data is valid
+  if (!Array.isArray(allProjects)) {
+    return (
+      <div className="p-4 text-red-500">
+        Error: Projects data failed to load. Please refresh the page.
+      </div>
+    );
+  }
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
@@ -118,12 +122,12 @@ export default function Overview() {
                         Expected completion: {roadmap.expected_completion_time}
                       </p>
                       <Progress 
-                        value={roadmap.progress?.percentage || 0} 
+                        value={roadmap.progress?.percentage ?? 0} 
                         className="bg-primary/20"
                         indicatorClassName="bg-primary"
                       />
                       <p className="mt-2 text-sm text-secondary">
-                        {roadmap.progress?.completedCount || 0} of {roadmap.progress?.totalCheckpoints || 0} checkpoints completed
+                        {roadmap.progress?.completedCount ?? 0} of {roadmap.progress?.totalCheckpoints ?? 0} checkpoints completed
                       </p>
                     </CardContent>
                   </Card>
@@ -132,6 +136,7 @@ export default function Overview() {
             </div>
           </div>
 
+          {/* Rest of the component remains the same */}
           {/* Suggested Quizzes */}
           <div className="mt-8">
             <h2 className="text-lg font-semibold text-primary">Suggested Quizzes</h2>
