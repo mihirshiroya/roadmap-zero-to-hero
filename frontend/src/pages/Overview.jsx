@@ -29,9 +29,32 @@ export default function Overview() {
   const navigate = useNavigate();
   const [selectedTopic, setSelectedTopic] = useState(null);
   
+  // Memoize the project selection FIRST
+  const projects = useMemo(() => {
+    try {
+      const shuffled = [...allProjects].sort(() => 0.5 - Math.random());
+      return shuffled.slice(0, Math.floor(Math.random() * 6) + 5);
+    } catch (error) {
+      console.error('Project selection error:', error);
+      return [];
+    }
+  }, []);
+
   useEffect(() => {
     dispatch(fetchRoadmaps());
   }, [dispatch]);
+
+  if (loading) return <LoadingSpinner />;
+  if (error) return <div className="text-error">Error loading roadmaps: {error}</div>;
+
+  // Move array check AFTER hooks
+  if (!Array.isArray(allProjects)) {
+    return (
+      <div className="p-4 text-red-500">
+        Error: Projects data failed to load. Please refresh the page.
+      </div>
+    );
+  }
 
   // Filter ongoing roadmaps (progress > 0% and < 100%)
   const ongoingRoadmaps = roadmaps?.filter(roadmap => {
@@ -52,29 +75,6 @@ export default function Overview() {
   const handleDifficultySelect = (difficulty) => {
     navigate(`/quiz/${selectedTopic.id}/${difficulty}`);
   };
-
-  if (loading) return <LoadingSpinner />;
-  if (error) return <div className="text-error">Error loading roadmaps: {error}</div>;
-
-  // First check if data is valid
-  if (!Array.isArray(allProjects)) {
-    return (
-      <div className="p-4 text-red-500">
-        Error: Projects data failed to load. Please refresh the page.
-      </div>
-    );
-  }
-
-  // Memoize the project selection
-  const projects = useMemo(() => {
-    try {
-      const shuffled = [...allProjects].sort(() => 0.5 - Math.random());
-      return shuffled.slice(0, Math.floor(Math.random() * 6) + 5);
-    } catch (error) {
-      console.error('Project selection error:', error);
-      return [];
-    }
-  }, []); // Empty array ensures this runs once
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
