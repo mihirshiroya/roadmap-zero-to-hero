@@ -23,51 +23,36 @@ const PORT = process.env.PORT || 5000;
 // Initialize Clerk
 const clerk = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 
-// Middleware
-// app.use(cors({
-//   origin: process.env.NODE_ENV === 'production' 
-//     ? 'https://roadmap-zero-to-hero.onrender.com' 
-//     : ['http://localhost:5173', 'http://127.0.0.1:5173'],
-//   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-//   allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
-//   credentials: true
-// }));
+// Global middleware to ensure proper content types for all responses
+app.use((req, res, next) => {
+  // Ensure JSON responses have proper Content-Type
+  const oldJson = res.json;
+  res.json = function(obj) {
+    res.setHeader('Content-Type', 'application/json');
+    return oldJson.call(this, obj);
+  };
+  next();
+});
 
-// Uncomment and modify the production static serving block
-if (process.env.NODE_ENV === 'production') {
-  // Serve static files with proper MIME types
-  app.use(express.static(path.join(__dirname, '../frontend/dist'), {
-    setHeaders: (res, path) => {
-      const type = mime.lookup(path);
-      if (type) {
-        res.setHeader('Content-Type', type);
-      }
+// CORS configuration
+const corsOptions = process.env.NODE_ENV === 'production' 
+  ? {
+      origin: 'https://roadmap-zero-to-hero.onrender.com',
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+      credentials: true
     }
-  }));
-  
-  // Handle client-side routing
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
-}
+  : {
+      origin: '*',
+      methods: '*',
+      allowedHeaders: '*',
+      optionsSuccessStatus: 204
+    };
 
-// Modify CORS configuration to be conditional
-app.use(cors(process.env.NODE_ENV === 'production' ? {
-  origin: 'https://roadmap-zero-to-hero.onrender.com',
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
-  credentials: true
-} : {
-  origin: '*',
-  methods: '*',
-  allowedHeaders: '*',
-  optionsSuccessStatus: 204
-}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
 
-// Add this after CORS setup but before routes
-app.options('*', cors()); // Handle ALL OPTIONS requests
-
-// Webhook middleware FIRST before any body parsing
+// Webhook middleware before body parsing
 app.use((req, res, next) => {
   if (req.originalUrl.startsWith('/api/webhooks')) {
     express.raw({ type: 'application/json' })(req, res, next);
@@ -76,11 +61,64 @@ app.use((req, res, next) => {
   }
 });
 
-// Then add standard body parsing
+// Standard body parsing
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Connect to MongoDB
+// Production static file serving with proper MIME types
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files with strict MIME type checking
+  app.use(express.static(path.join(__dirname, '../frontend/dist'), {
+    setHeaders: (res, filePath) => {
+      const mimeType = mime.lookup(filePath);
+      if (mimeType) {
+        res.setHeader('Content-Type', mimeType);
+        // Add additional security headers
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+      }
+      
+      // Special handling for JavaScript modules
+      if (filePath.endsWith('.js')) {
+        if (filePath.includes('module') || filePath.includes('esm')) {
+          res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+        }
+      }
+    }
+  }));
+
+  // Handle client-side routing while preserving MIME types
+  app.get('*', (req, res) => {
+    if (req.headers.accept && req.headers.accept.includes('text/html')) {
+      res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+    } else {
+      res.status(404).json({ error: 'Not found' });
+    }
+  });
+}
+
+// API Routes with explicit content type headers
+app.use('/api/users', userRoutes);
+app.use('/api/roadmaps', roadmapRoutes);
+app.use('/api/quizzes', quizRoutes);
+app.use('/api/quiz-stats', quizStatsRoutes);
+app.use('/api/webhooks', webhookRoutes);
+
+// Public route example with explicit content type
+app.get('/api/public', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.json({ message: 'This is a public route' });
+});
+
+// Health check endpoint with explicit content type
+app.get('/health', (req, res) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.status(200).json({ status: 'ok' });
+});
+
+// Error handler
+app.use(errorHandler);
+
+// MongoDB connection
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('Connected to MongoDB');
@@ -92,24 +130,3 @@ mongoose.connect(process.env.MONGODB_URI)
     console.error('MongoDB connection error:', err);
     process.exit(1);
   });
-
-// Routes
-app.use('/api/users', userRoutes);
-app.use('/api/roadmaps', roadmapRoutes);
-app.use('/api/quizzes', quizRoutes);
-app.use('/api/quiz-stats', quizStatsRoutes);
-app.use('/api/webhooks', webhookRoutes);
-
-// Public route example
-app.get('/api/public', (req, res) => {
-  res.json({ message: 'This is a public route' });
-});
-
-// Basic health check endpoint
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok' });
-});
-
-// Error handler
-app.use(errorHandler);
-
