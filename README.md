@@ -11,22 +11,25 @@ A comprehensive roadmap and guidance platform designed to help developers progre
 ## Features 🌟
 
 - **Interactive Roadmaps**  
-  Well-structured paths to guide developers at every stage of their journey (refer to `roadmapController.js` lines 4-51).
+  Well-structured paths to guide developers at every stage of their journey.
 
 - **Adaptive Quiz System**  
-  Quizzes tailored to skill levels, with detailed performance tracking (check `quizRoutes.js` lines 10-87).
+  Quizzes tailored to skill levels, with detailed performance tracking.
 
 - **Project Recommendations**  
-  AI-generated project ideas to match your skill level and interests (see `Projects.jsx` lines 13-90).
+  AI-generated project ideas to match your skill level and interests.
 
 - **Progress Analytics**  
-  Visualized progress tracking for deeper insights (view `Overview.jsx` lines 89-137).
+  Visualized progress tracking for deeper insights.
 
 - **Authentication**  
-  Secure authentication using Clerk and JWT tokens (refer to `authMiddleware.js` lines 3-30).
+  Secure authentication using Clerk and JWT tokens.
 
-- **Dark Mode**  
-  Customizable themes with light and dark modes (see `index.css` lines 3-57).
+---
+
+## Live Demo 🌐
+
+Check out the live platform here: [Roadmap: Zero to Hero](https://roadmap-zero-to-hero.onrender.com/)
 
 ---
 
