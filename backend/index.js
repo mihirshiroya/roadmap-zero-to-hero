@@ -1,3 +1,4 @@
+// server.js
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
@@ -65,35 +66,34 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Production static file serving with proper MIME types
+// Static file serving for production - BEFORE API routes
 if (process.env.NODE_ENV === 'production') {
-  // Serve static files with strict MIME type checking
-  app.use(express.static(path.join(__dirname, '../frontend/dist'), {
+  // Serve the root directory static files
+  app.use('/', express.static(path.join(__dirname, '../frontend/dist'), {
     setHeaders: (res, filePath) => {
       const mimeType = mime.lookup(filePath);
       if (mimeType) {
         res.setHeader('Content-Type', mimeType);
-        // Add additional security headers
         res.setHeader('X-Content-Type-Options', 'nosniff');
       }
       
       // Special handling for JavaScript modules
       if (filePath.endsWith('.js')) {
-        if (filePath.includes('module') || filePath.includes('esm')) {
-          res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-        }
+        res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
       }
     }
   }));
 
-  // Handle client-side routing while preserving MIME types
-  app.get('*', (req, res) => {
-    if (req.headers.accept && req.headers.accept.includes('text/html')) {
-      res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-    } else {
-      res.status(404).json({ error: 'Not found' });
+  // Serve assets directory explicitly
+  app.use('/assets', express.static(path.join(__dirname, '../frontend/dist/assets'), {
+    setHeaders: (res, filePath) => {
+      const mimeType = mime.lookup(filePath);
+      if (mimeType) {
+        res.setHeader('Content-Type', mimeType);
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+      }
     }
-  });
+  }));
 }
 
 // API Routes with explicit content type headers
@@ -115,7 +115,18 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-// Error handler
+// Client-side routing handler - AFTER API routes
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res, next) => {
+    // Skip this middleware if the request is for an API route
+    if (req.path.startsWith('/api/')) {
+      return next();
+    }
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
+
+// Error handler must be last
 app.use(errorHandler);
 
 // MongoDB connection
