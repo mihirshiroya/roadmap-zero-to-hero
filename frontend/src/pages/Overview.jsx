@@ -89,51 +89,63 @@ export default function Overview() {
           {/* Roadmap Progress */}
           <div className="mt-6">
             <h2 className="text-lg font-semibold text-primary">Current Roadmap Progress</h2>
-            <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-              {ongoingRoadmaps.map((roadmap) => (
-                <Link 
-                  key={roadmap._id} 
-                  to={`/roadmaps/${roadmap._id}`}
-                  className="block"
-                >
-                  <Card className="hover:border-primary transition-colors bg-surface border-color">
-                    <CardHeader>
-                      <div className="flex items-center gap-4">
-                        <div className="bg-surface/20 p-2 rounded-lg border border-color">
-                          {roadmap.logo_url ? (
-                            <img 
-                              src={roadmap.logo_url} 
-                              alt={roadmap.name}
-                              className="w-10 h-10 object-contain rounded-md"
-                            />
-                          ) : (
-                            <div className="w-10 h-10 flex items-center justify-center text-primary">
-                              <AcademicCapIcon className="h-6 w-6" />
-                            </div>
-                          )}
+            {ongoingRoadmaps.length > 0 ? (
+              <div className="mt-2 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                {ongoingRoadmaps.map((roadmap) => (
+                  <Link 
+                    key={roadmap._id} 
+                    to={`/roadmaps/${roadmap._id}`}
+                    className="block"
+                  >
+                    <Card className="hover:border-primary transition-colors bg-surface border-color">
+                      <CardHeader>
+                        <div className="flex items-center gap-4">
+                          <div className="bg-surface/20 p-2 rounded-lg border border-color">
+                            {roadmap.logo_url ? (
+                              <img 
+                                src={roadmap.logo_url} 
+                                alt={roadmap.name}
+                                className="w-10 h-10 object-contain rounded-md"
+                              />
+                            ) : (
+                              <div className="w-10 h-10 flex items-center justify-center text-primary">
+                                <AcademicCapIcon className="h-6 w-6" />
+                              </div>
+                            )}
+                          </div>
+                          <CardTitle className="text-primary">
+                            {roadmap.name}
+                          </CardTitle>
                         </div>
-                        <CardTitle className="text-primary">
-                          {roadmap.name}
-                        </CardTitle>
-                      </div>
-                    </CardHeader>
-                    <CardContent>
-                      <p className="text-secondary mb-4">
-                        Expected completion: {roadmap.expected_completion_time}
-                      </p>
-                      <Progress 
-                        value={roadmap.progress?.percentage ?? 0} 
-                        className="bg-primary/20"
-                        indicatorClassName="bg-primary"
-                      />
-                      <p className="mt-2 text-sm text-secondary">
-                        {roadmap.progress?.completedCount ?? 0} of {roadmap.progress?.totalCheckpoints ?? 0} checkpoints completed
-                      </p>
-                    </CardContent>
-                  </Card>
-                </Link>
-              ))}
-            </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-secondary mb-4">
+                          Expected completion: {roadmap.expected_completion_time}
+                        </p>
+                        <Progress 
+                          value={roadmap.progress?.percentage ?? 0} 
+                          className="bg-primary/20"
+                          indicatorClassName="bg-primary"
+                        />
+                        <p className="mt-2 text-sm text-secondary">
+                          {roadmap.progress?.completedCount ?? 0} of {roadmap.progress?.totalCheckpoints ?? 0} checkpoints completed
+                        </p>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <div className="col-span-full text-center py-8">
+                <div className="text-secondary mb-2">📭 No active roadmaps found</div>
+                <p className="text-sm text-secondary">
+                  Start a new learning journey from our{' '}
+                  <Link to="/roadmaps" className="text-primary hover:underline">
+                    Roadmaps section
+                  </Link>
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Rest of the component remains the same */}
