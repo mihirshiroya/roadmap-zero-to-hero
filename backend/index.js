@@ -15,6 +15,7 @@ const quizStatsController = require('./controllers/quizStatsController');
 const quizStatsRoutes = require('./routes/quizStatsRoutes');
 const webhookRoutes = require('./routes/webhooks');
 const path = require('path');
+const mime = require('mime-types');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -34,14 +35,17 @@ const clerk = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
 
 // Uncomment and modify the production static serving block
 if (process.env.NODE_ENV === 'production') {
-  // Serve static files from frontend
+  // Serve static files with proper MIME types
   app.use(express.static(path.join(__dirname, '../frontend/dist'), {
-    setHeaders: (res) => {
-      res.setHeader('Content-Type', 'text/javascript');
+    setHeaders: (res, path) => {
+      const type = mime.getType(path);
+      if (type) {
+        res.setHeader('Content-Type', type);
+      }
     }
   }));
   
-  // Handle client-side routing - should be AFTER all API routes
+  // Handle client-side routing
   app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
   });
