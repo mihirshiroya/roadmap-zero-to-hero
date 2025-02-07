@@ -49,6 +49,7 @@ const roadmapsSlice = createSlice({
   initialState: {
     roadmaps: [],
     currentRoadmap: null,
+    activeRoadmapId: null,
     loading: false,
     error: null
   },
@@ -67,6 +68,9 @@ const roadmapsSlice = createSlice({
           ? { ...roadmap, progress } 
           : roadmap
       );
+    },
+    setActiveRoadmap: (state, action) => {
+      state.activeRoadmapId = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -140,3 +144,5 @@ export const selectRoadmapProgress = createSelector(
   [selectRoadmapById],
   roadmap => roadmap?.progress || { percentage: 0 }
 );
+
+export const { updateProgressOptimistic, setActiveRoadmap } = roadmapsSlice.actions;

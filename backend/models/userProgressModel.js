@@ -12,8 +12,9 @@ const userProgressSchema = new mongoose.Schema({
   },
   completedCheckpoints: [{
     stepId: Number,
-    checkpointId: String
-  }]
+    checkpointId: String,
+    completedAt: { type: Date, default: Date.now }
+  }],
 }, { timestamps: true });
 
 // Compound index for faster queries

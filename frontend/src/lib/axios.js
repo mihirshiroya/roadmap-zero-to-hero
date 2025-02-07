@@ -6,17 +6,15 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
+  withCredentials: true
 });
 
 // Add auth token to requests
 api.interceptors.request.use(async (config) => {
   try {
-    // Ensure Clerk is initialized
-    if (window.Clerk && window.Clerk.session) {
-      const token = await window.Clerk.session.getToken();
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    const token = await window.Clerk.session?.getToken();
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   } catch (error) {

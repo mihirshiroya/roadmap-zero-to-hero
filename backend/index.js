@@ -17,12 +17,15 @@ const quizStatsRoutes = require('./routes/quizStatsRoutes');
 const webhookRoutes = require('./routes/webhooks');
 const path = require('path');
 const mime = require('mime-types');
+const faqRoutes = require('./routes/faqRoutes');
+const progressRouter = require('./routes/progress');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Initialize Clerk
 const clerk = new Clerk({ secretKey: process.env.CLERK_SECRET_KEY });
+
 
 // Global middleware to ensure proper content types for all responses
 app.use((req, res, next) => {
@@ -35,6 +38,7 @@ app.use((req, res, next) => {
   next();
 });
 
+
 // CORS configuration
 const corsOptions = process.env.NODE_ENV === 'production' 
   ? {
@@ -44,10 +48,10 @@ const corsOptions = process.env.NODE_ENV === 'production'
       credentials: true
     }
   : {
-      origin: '*',
-      methods: '*',
-      allowedHeaders: '*',
-      optionsSuccessStatus: 204
+      origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+      methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization', 'Origin'],
+      credentials: true
     };
 
 app.use(cors(corsOptions));
@@ -66,35 +70,35 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static file serving for production - BEFORE API routes
-if (process.env.NODE_ENV === 'production') {
-  // Serve the root directory static files
-  app.use('/', express.static(path.join(__dirname, '../frontend/dist'), {
-    setHeaders: (res, filePath) => {
-      const mimeType = mime.lookup(filePath);
-      if (mimeType) {
-        res.setHeader('Content-Type', mimeType);
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-      }
+// // Static file serving for production - BEFORE API routes
+// if (process.env.NODE_ENV === 'production') {
+//   // Serve the root directory static files
+//   app.use('/', express.static(path.join(__dirname, '../frontend/dist'), {
+//     setHeaders: (res, filePath) => {
+//       const mimeType = mime.lookup(filePath);
+//       if (mimeType) {
+//         res.setHeader('Content-Type', mimeType);
+//         res.setHeader('X-Content-Type-Options', 'nosniff');
+//       }
       
-      // Special handling for JavaScript modules
-      if (filePath.endsWith('.js')) {
-        res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-      }
-    }
-  }));
+//       // Special handling for JavaScript modules
+//       if (filePath.endsWith('.js')) {
+//         res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+//       }
+//     }
+//   }));
 
-  // Serve assets directory explicitly
-  app.use('/assets', express.static(path.join(__dirname, '../frontend/dist/assets'), {
-    setHeaders: (res, filePath) => {
-      const mimeType = mime.lookup(filePath);
-      if (mimeType) {
-        res.setHeader('Content-Type', mimeType);
-        res.setHeader('X-Content-Type-Options', 'nosniff');
-      }
-    }
-  }));
-}
+//   // Serve assets directory explicitly
+//   app.use('/assets', express.static(path.join(__dirname, '../frontend/dist/assets'), {
+//     setHeaders: (res, filePath) => {
+//       const mimeType = mime.lookup(filePath);
+//       if (mimeType) {
+//         res.setHeader('Content-Type', mimeType);
+//         res.setHeader('X-Content-Type-Options', 'nosniff');
+//       }
+//     }
+//   }));
+// }
 
 // API Routes with explicit content type headers
 app.use('/api/users', userRoutes);
@@ -102,6 +106,8 @@ app.use('/api/roadmaps', roadmapRoutes);
 app.use('/api/quizzes', quizRoutes);
 app.use('/api/quiz-stats', quizStatsRoutes);
 app.use('/api/webhooks', webhookRoutes);
+app.use('/api/faqs', faqRoutes);
+app.use('/api/progress', progressRouter);
 
 // Public route example with explicit content type
 app.get('/api/public', (req, res) => {
@@ -115,16 +121,16 @@ app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
-// Client-side routing handler - AFTER API routes
-if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res, next) => {
-    // Skip this middleware if the request is for an API route
-    if (req.path.startsWith('/api/')) {
-      return next();
-    }
-    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-  });
-}
+// // Client-side routing handler - AFTER API routes
+// if (process.env.NODE_ENV === 'production') {
+//   app.get('*', (req, res, next) => {
+//     // Skip this middleware if the request is for an API route
+//     if (req.path.startsWith('/api/')) {
+//       return next();
+//     }
+//     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+//   });
+// }
 
 // Error handler must be last
 app.use(errorHandler);

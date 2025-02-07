@@ -13,6 +13,7 @@ import Projects from "../pages/Projects"
 import Analytics from "../pages/Analytics"
 import QuizScreen from "../pages/QuizScreen"
 import QuizResults from "../pages/QuizResults"
+import Faqs from "../pages/Faqs"
 
 export const createRoutes = (clerkAppearance) => [
   {
@@ -59,6 +60,7 @@ export const createRoutes = (clerkAppearance) => [
       { path: "/quizzes", element: <Quizzes /> },
       { path: "/projects", element: <Projects /> },
       { path: "/analytics", element: <Analytics /> },
+      { path: "/faqs", element: <Faqs /> },
     ]
   },
   {

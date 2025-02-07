@@ -10,6 +10,7 @@ import {
   AcademicCapIcon,
   ClipboardDocumentCheckIcon,
   RocketLaunchIcon,
+  QuestionMarkCircleIcon,
 } from "@heroicons/react/24/outline"
 import Header from '../components/Header'
 import {  Menu, X, ChevronLeft, ChevronRight, Compass, Home } from 'lucide-react'
@@ -23,6 +24,7 @@ const navigation = [
   { name: "Quizzes", href: "/quizzes", icon: ClipboardDocumentCheckIcon },
   { name: "Projects", href: "/projects", icon: RocketLaunchIcon },
   { name: "Analytics", href: "/analytics", icon: ChartPieIcon },
+  { name: "FAQs", href: "/faqs", icon: QuestionMarkCircleIcon },
 ]
 
 
