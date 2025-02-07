@@ -70,35 +70,35 @@ app.use((req, res, next) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// // Static file serving for production - BEFORE API routes
-// if (process.env.NODE_ENV === 'production') {
-//   // Serve the root directory static files
-//   app.use('/', express.static(path.join(__dirname, '../frontend/dist'), {
-//     setHeaders: (res, filePath) => {
-//       const mimeType = mime.lookup(filePath);
-//       if (mimeType) {
-//         res.setHeader('Content-Type', mimeType);
-//         res.setHeader('X-Content-Type-Options', 'nosniff');
-//       }
+// Updated static file serving paths
+if (process.env.NODE_ENV === 'production') {
+  // Serve from public directory
+  app.use('/', express.static(path.join(__dirname, 'public'), {
+    setHeaders: (res, filePath) => {
+      const mimeType = mime.lookup(filePath);
+      if (mimeType) {
+        res.setHeader('Content-Type', mimeType);
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+      }
       
-//       // Special handling for JavaScript modules
-//       if (filePath.endsWith('.js')) {
-//         res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
-//       }
-//     }
-//   }));
+      // Special handling for JavaScript modules
+      if (filePath.endsWith('.js')) {
+        res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      }
+    }
+  }));
 
-//   // Serve assets directory explicitly
-//   app.use('/assets', express.static(path.join(__dirname, '../frontend/dist/assets'), {
-//     setHeaders: (res, filePath) => {
-//       const mimeType = mime.lookup(filePath);
-//       if (mimeType) {
-//         res.setHeader('Content-Type', mimeType);
-//         res.setHeader('X-Content-Type-Options', 'nosniff');
-//       }
-//     }
-//   }));
-// }
+  // Serve assets
+  app.use('/assets', express.static(path.join(__dirname, 'public/assets'), {
+    setHeaders: (res, filePath) => {
+      const mimeType = mime.lookup(filePath);
+      if (mimeType) {
+        res.setHeader('Content-Type', mimeType);
+        res.setHeader('X-Content-Type-Options', 'nosniff');
+      }
+    }
+  }));
+}
 
 // API Routes with explicit content type headers
 app.use('/api/users', userRoutes);
@@ -122,15 +122,15 @@ app.get('/health', (req, res) => {
 });
 
 // // Client-side routing handler - AFTER API routes
-// if (process.env.NODE_ENV === 'production') {
-//   app.get('*', (req, res, next) => {
-//     // Skip this middleware if the request is for an API route
-//     if (req.path.startsWith('/api/')) {
-//       return next();
-//     }
-//     res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
-//   });
-// }
+if (process.env.NODE_ENV === 'production') {
+  app.get('*', (req, res, next) => {
+    // Skip this middleware if the request is for an API route
+    if (req.path.startsWith('/api/')) {
+      return next();
+    }
+    res.sendFile(path.join(__dirname, '../frontend/dist/index.html'));
+  });
+}
 
 // Error handler must be last
 app.use(errorHandler);
