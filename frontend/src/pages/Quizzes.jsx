@@ -38,23 +38,25 @@ export default function Quizzes() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-        <div className="bg-surface p-6 rounded-lg border-2 border-color">
-          <h3 className="text-lg font-semibold text-primary mb-2">Quizzes Attempted</h3>
-          <p className="text-2xl font-bold text-primary">{quizStats?.attempts ?? 0}</p>
+      {!selectedTopic && (
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <div className="bg-surface p-6 rounded-lg border-2 border-color">
+            <h3 className="text-lg font-semibold text-primary mb-2">Quizzes Attempted</h3>
+            <p className="text-2xl font-bold text-primary">{quizStats?.attempts ?? 0}</p>
+          </div>
+          <div className="bg-surface p-6 rounded-lg border-2 border-color">
+            <h3 className="text-lg font-semibold text-primary mb-2">Correct Answers</h3>
+            <p className="text-2xl font-bold text-primary">
+              {quizStats?.correctAnswers ?? 0}/{quizStats?.totalQuestions ?? 0}
+            </p>
+          </div>
+          <div className="bg-surface p-6 rounded-lg border-2 border-color">
+            <h3 className="text-lg font-semibold text-primary mb-2">Accuracy</h3>
+            <p className="text-2xl font-bold text-primary">{quizStats?.accuracy ?? 0}%</p>
+          </div>
         </div>
-        <div className="bg-surface p-6 rounded-lg border-2 border-color">
-          <h3 className="text-lg font-semibold text-primary mb-2">Correct Answers</h3>
-          <p className="text-2xl font-bold text-primary">
-            {quizStats?.correctAnswers ?? 0}/{quizStats?.totalQuestions ?? 0}
-          </p>
-        </div>
-        <div className="bg-surface p-6 rounded-lg border-2 border-color">
-          <h3 className="text-lg font-semibold text-primary mb-2">Accuracy</h3>
-          <p className="text-2xl font-bold text-primary">{quizStats?.accuracy ?? 0}%</p>
-        </div>
-      </div>
-
+      )}
+      
       <h1 className="text-2xl font-semibold text-primary">Quizzes</h1>
       
       {!selectedTopic ? (
@@ -78,7 +80,7 @@ export default function Quizzes() {
               <button
                 key={difficulty}
                 onClick={() => handleDifficultySelect(difficulty)}
-                className="bg-surface border border-color rounded-lg px-6 py-3 capitalize hover:border-primary transition-colors"
+                className="bg-surface border border-color rounded-lg px-6 py-3 capitalize hover:border-primary text-primary transition-colors"
               >
                 {difficulty}
               </button>

@@ -38,6 +38,7 @@ export default function Timeline() {
 
   if (loading) return <div className="flex justify-center items-center h-64">Loading timeline...</div>
   if (error) return <div className="text-red-500">Error: {error}</div>
+  if (chartData.length === 0) return <div className="flex justify-center items-center h-64 text-gray-500">No completion data available for this period</div>
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {

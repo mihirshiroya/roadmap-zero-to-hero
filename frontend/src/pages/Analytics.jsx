@@ -78,7 +78,7 @@ export default function Analytics() {
                         </div>
                     ))}
                     {filteredHistory.length === 0 && !loading && (
-                        <p className="text-muted-foreground text-center py-4">
+                        <p className="text-gray-400 text-center py-4">
                             {activeRoadmapId 
                                 ? 'No history for this roadmap'
                                 : roadmapsLoading 

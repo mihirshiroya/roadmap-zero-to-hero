@@ -21,9 +21,14 @@ exports.updateQuizStats = async (req, res) => {
         {
           $set: {
             'quizStats.accuracy': {
-              $multiply: [
-                { $divide: ['$quizStats.correctAnswers', '$quizStats.totalQuestions'] },
-                100
+              $round: [
+                {
+                  $multiply: [
+                    { $divide: ['$quizStats.correctAnswers', '$quizStats.totalQuestions'] },
+                    100
+                  ]
+                },
+                2
               ]
             }
           }
