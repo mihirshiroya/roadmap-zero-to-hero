@@ -83,7 +83,7 @@ export default function Dashboard() {
                 leaveTo="-translate-x-full"
               >
                 <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
-                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-surface border-r border-color px-6 pb-4">
+                  <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-background border-r border-color px-6 pb-4">
                     {/* Mobile Go Back Button */}
                     <div className="pt-6 border-b border-color pb-4 mb-2">
                       <Link
@@ -139,7 +139,7 @@ export default function Dashboard() {
 
         {/* Desktop Sidebar - Updated without logo */}
         <div className={`hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:flex-col ${isCollapsed ? 'lg:w-20' : 'lg:w-72'} transition-all duration-300`}>
-          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-surface border-r border-color px-6 pb-4">
+          <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-background border-r border-color px-6 pb-4">
             {/* Go Back Button */}
             <div className="pt-6 border-b border-color pb-4 mb-2">
               <Link
@@ -186,7 +186,7 @@ export default function Dashboard() {
           {/* Collapse Button - Adjusted position */}
           <button
             onClick={toggleSidebar}
-            className="absolute -right-4 top-4 hidden lg:flex items-center justify-center h-8 w-8 rounded-full bg-surface border border-color text-secondary hover:text-primary"
+            className="absolute -right-4 top-4 hidden lg:flex items-center justify-center h-8 w-8 rounded-full bg-background border border-color text-secondary hover:text-primary"
           >
             {isCollapsed ? (
               <ChevronRight className="h-4 w-4" />

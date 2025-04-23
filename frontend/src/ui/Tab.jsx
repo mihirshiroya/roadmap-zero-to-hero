@@ -3,7 +3,7 @@ export function Tabs({ children, className = "" }) {
   }
   
   export function TabsList({ children, fullWidth = false }) {
-    return <div className={`flex rounded-xl bg-surface p-1 ${fullWidth ? "w-full" : ""}`}>{children}</div>
+    return <div className={`flex rounded-xl bg-background p-1 border border-color ${fullWidth ? "w-full" : ""}`}>{children}</div>
   }
   
   export function TabsTrigger({ children, isActive, onClick, fullWidth = false }) {
@@ -25,7 +25,7 @@ export function Tabs({ children, className = "" }) {
   }
   
   export function Card({ children }) {
-    return <div className="rounded-lg border border-color bg-surface text-primary shadow-sm">{children}</div>
+    return <div className="rounded-lg border border-color bg-background text-primary shadow-sm">{children}</div>
   }
   
   export function CardHeader({ children }) {

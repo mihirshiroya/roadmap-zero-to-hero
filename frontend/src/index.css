@@ -1,49 +1,111 @@
 @import 'tailwindcss';
 
 :root {
-  --color-primary: 59 130 246;        /* Blue-500 */
-  --color-secondary: 22 163 74;       /* Green-600 */
-  --color-accent: 139 92 246;         /* Purple-500 */
-  --color-background: 248 250 252;    /* Slate-50 */
-  --color-surface: 255 255 255;       /* White */
-  --color-text-primary: 15 23 42;     /* Slate-900 */
-  --color-text-secondary: 71 85 105;  /* Slate-600 */
-  --color-text-disabled: 148 163 184; /* Slate-400 */
-  --color-border: 226 232 240;        /* Slate-200 */
-  --color-success: 22 163 74;         /* Green-600 */
-  --color-warning: 217 119 6;         /* Amber-600 */
-  --color-error: 220 38 38;           /* Red-600 */
+  /* Base Colors */
+  --color-primary: 126 58 242;        /* Blue-500 - Main brand color */
+  --color-primary-light: 96 165 250;  /* Blue-400 - Lighter primary */
+  --color-primary-dark: 37 99 235;    /* Blue-600 - Darker primary */
+  
+  --color-secondary: 22 163 74;       /* Green-600 - Secondary actions */
+  --color-secondary-light: 34 197 94; /* Green-500 - Lighter secondary */
+  --color-secondary-dark: 21 128 61;  /* Green-700 - Darker secondary */
+  
+  --color-accent: 139 92 246;         /* Purple-500 - Premium features */
+  --color-accent-light: 167 139 250;  /* Purple-400 - Lighter accent */
+  --color-accent-dark: 124 58 237;    /* Purple-600 - Darker accent */
+  
+  /* Background and Surface */
+  --color-background: 248 250 252;    /* Slate-50 - Main background */
+  --color-surface: 255 255 255;       /* White - Card/component surface */
+  --color-surface-secondary: 241 245 249; /* Slate-100 - Secondary surface */
+  
+  /* Text Colors */
+  --color-text-primary: 15 23 42;     /* Slate-900 - Main text */
+  --color-text-secondary: 71 85 105;  /* Slate-600 - Secondary text */
+  --color-text-disabled: 148 163 184; /* Slate-400 - Disabled text */
+  
+  /* Border and Divider */
+  --color-border: 226 232 240;        /* Slate-200 - Borders */
+  --color-border-focus: 59 130 246;   /* Blue-500 - Focus state */
+  
+  /* Status Colors */
+  --color-success: 22 163 74;         /* Green-600 - Success states */
+  --color-warning: 217 119 6;         /* Amber-600 - Warning states */
+  --color-error: 220 38 38;           /* Red-600 - Error states */
+  
+  /* Real Estate Specific */
+  --color-price: 34 197 94;           /* Green-500 - Property prices */
+  --color-featured: 234 179 8;        /* Yellow-500 - Featured listings */
+  --color-sold: 239 68 68;            /* Red-500 - Sold properties */
+  --color-rent: 14 165 233;           /* Sky-500 - Rental properties */
 }
 
 .dark {
-  --color-primary: 37 99 235;         /* Blue-600 */
+  /* Base Colors - Dark Mode */
+  --color-primary: 109 40 217;         /* purple-600 */
+  --color-primary-light: 59 130 246;  /* Blue-500 */
+  --color-primary-dark: 88 28 178;    /* Blue-700 */
+  
   --color-secondary: 34 197 94;       /* Green-500 */
+  --color-secondary-light: 74 222 128;/* Green-400 */
+  --color-secondary-dark: 22 163 74;  /* Green-600 */
+  
   --color-accent: 168 85 247;         /* Purple-500 */
-  --color-background: 15 23 42;       /* Slate-900 */
+  --color-accent-light: 192 132 252;  /* Purple-400 */
+  --color-accent-dark: 147 51 234;    /* Purple-600 */
+  
+  /* Background and Surface - Dark Mode */
+  --color-background: 20 20 20;       /* Slate-900 */
   --color-surface: 30 41 59;          /* Slate-800 */
+  --color-surface-secondary: 51 65 85; /* Slate-700 */
+  
+  /* Text Colors - Dark Mode */
   --color-text-primary: 241 245 249;  /* Slate-100 */
   --color-text-secondary: 148 163 184;/* Slate-400 */
   --color-text-disabled: 71 85 105;   /* Slate-600 */
+  
+  /* Border and Divider - Dark Mode */
   --color-border: 51 65 85;           /* Slate-700 */
+  --color-border-focus: 37 99 235;    /* Blue-600 */
+  
+  /* Status Colors - Dark Mode */
   --color-success: 34 197 94;         /* Green-500 */
   --color-warning: 245 158 11;        /* Amber-500 */
   --color-error: 239 68 68;           /* Red-500 */
+  
+  /* Real Estate Specific - Dark Mode */
+  --color-price: 74 222 128;          /* Green-400 */
+  --color-featured: 250 204 21;       /* Yellow-400 */
+  --color-sold: 248 113 113;          /* Red-400 */
+  --color-rent: 56 189 248;           /* Sky-400 */
 }
 
 .bg-primary { background-color: rgb(var(--color-primary)); }
+.bg-primary-light { background-color: rgb(var(--color-primary-light)); }
+.bg-primary-dark { background-color: rgb(var(--color-primary-dark)); }
 .bg-secondary { background-color: rgb(var(--color-secondary)); }
+.bg-secondary-light { background-color: rgb(var(--color-secondary-light)); }
+.bg-secondary-dark { background-color: rgb(var(--color-secondary-dark)); }
 .bg-accent { background-color: rgb(var(--color-accent)); }
+.bg-accent-light { background-color: rgb(var(--color-accent-light)); }
+.bg-accent-dark { background-color: rgb(var(--color-accent-dark)); }
 .bg-background { background-color: rgb(var(--color-background)); }
 .bg-surface { background-color: rgb(var(--color-surface)); }
+.bg-surface-secondary { background-color: rgb(var(--color-surface-secondary)); }
 .bg-success { background-color: rgb(var(--color-success)); }
 .bg-warning { background-color: rgb(var(--color-warning)); }
 .bg-error { background-color: rgb(var(--color-error)); }
+.bg-price { background-color: rgb(var(--color-price)); }
+.bg-featured { background-color: rgb(var(--color-featured)); }
+.bg-sold { background-color: rgb(var(--color-sold)); }
+.bg-rent { background-color: rgb(var(--color-rent)); }
 
 .text-primary { color: rgb(var(--color-text-primary)); }
 .text-secondary { color: rgb(var(--color-text-secondary)); }
 .text-disabled { color: rgb(var(--color-text-disabled)); }
 
 .border-color { border-color: rgb(var(--color-border)); }
+.border-focus { border-color: rgb(var(--color-border-focus)); }
 
 @keyframes marquee {
   0% { transform: translateX(100%); }
@@ -55,4 +117,3 @@
   white-space: nowrap;
   animation: marquee 15s linear infinite;
 }
-

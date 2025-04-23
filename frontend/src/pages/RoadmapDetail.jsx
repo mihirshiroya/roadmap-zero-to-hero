@@ -10,6 +10,7 @@ import { CheckCircle, Circle, ChevronDown, ChevronUp, Lock, Clock, Info } from "
 import LoadingSpinner from "../components/LoadingSpinner"
 import { cn } from "../lib/utils"
 import  Checkbox  from "../ui/Checkbox"
+import { useTheme } from "../context/ThemeContext"
 
 import axios from '../lib/axios'
 
@@ -17,6 +18,7 @@ const RoadmapDetail = () => {
   const { id } = useParams()
   const dispatch = useDispatch()
   const { currentRoadmap: roadmap, loading, error } = useSelector((state) => state.roadmaps)
+  const { theme } = useTheme()
   const [expandedSteps, setExpandedSteps] = useState(() => {
     const initial = new Set();
     if (roadmap?.steps?.length > 0) {
@@ -136,9 +138,9 @@ const RoadmapDetail = () => {
               {roadmap.steps.map((step, stepIndex) => {
                 const isLocked = isStepLocked(stepIndex)
                 const isExpanded = expandedSteps.has(step.id)
-
+//bg-gradient-to-r from-gray-100 to-gray-200
                 return (
-                  <div key={step.id} className="rounded-lg border border-color bg-surface dark:bg-surface/80">
+                  <div key={step.id} className={`rounded-lg border border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
                     <div
                       className={`relative cursor-pointer p-4 md:p-6 transition-colors duration-200 ${
                         isLocked 

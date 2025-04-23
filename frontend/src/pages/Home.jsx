@@ -123,7 +123,7 @@ export default function Home() {
       </div>
 
       {/* Features Section */}
-      <div className="bg-surface border-y border-color">
+      <div className="bg-background border-y border-color">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <h2 className="text-4xl font-bold text-primary sm:text-5xl">Why Choose Zero to Hero?</h2>
           <div className="mt-12 grid gap-8 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
@@ -168,7 +168,7 @@ export default function Home() {
       </div>
 
       {/* Contact Section */}
-      <div className="bg-surface border-y border-color">
+      <div className="bg-background border-y border-color">
         <div className="max-w-7xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
             {/* Left Column - Contact Info */}
@@ -220,7 +220,7 @@ export default function Home() {
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full rounded-lg border border-color bg-surface text-primary p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="w-full rounded-lg border border-color bg-background text-primary p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -232,7 +232,7 @@ export default function Home() {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full rounded-lg border border-color bg-surface text-primary p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
+                    className="w-full rounded-lg border border-color bg-background text-primary p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors"
                     required
                   />
                 </div>
@@ -243,7 +243,7 @@ export default function Home() {
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    className="w-full rounded-lg border border-color bg-surface text-primary p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" 
+                    className="w-full rounded-lg border border-color bg-background text-primary p-3 focus:ring-2 focus:ring-primary/20 focus:border-primary transition-colors" 
                     rows="5"
                     required
                   ></textarea>
@@ -282,7 +282,7 @@ export default function Home() {
 
 function RoadmapCard({ title, description, icon }) {
   return (
-    <div className="bg-surface border border-color rounded-lg p-8 hover:border-primary transition-colors">
+    <div className="bg-background border border-color rounded-lg p-8 hover:border-primary transition-colors">
       <div className="text-4xl mb-6">
         <div className="inline-block p-3 bg-primary/10 rounded-lg">
           <span className="text-primary">{icon}</span>

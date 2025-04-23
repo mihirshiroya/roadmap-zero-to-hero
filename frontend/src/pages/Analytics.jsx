@@ -68,7 +68,7 @@ export default function Analytics() {
                 </h2>
                 <div className="space-y-4">
                     {filteredHistory.map(item => (
-                        <div key={item._id} className="flex justify-between items-center p-3 bg-surface rounded border border-border hover:bg-surface/90 transition-colors">
+                        <div key={item._id} className="flex justify-between items-center p-3 bg-background rounded border border-color hover:bg-background/90 transition-colors">
                             <div>
                                 <h3 className="font-medium text-primary">{getCheckpointName(item)}</h3>
                                 <p className="text-sm text-gray-500">

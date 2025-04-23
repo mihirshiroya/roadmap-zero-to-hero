@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFAQs } from '../Slicers/faqSlice';
 import { ChevronDown, ChevronUp, ChevronLeft } from 'lucide-react';
-
+import { useTheme } from "../context/ThemeContext"
+import LoadingSpinner from '../components/LoadingSpinner';
 export default function Faqs() {
   const dispatch = useDispatch();
   const { faqTopics, loading, error } = useSelector((state) => state.faq);
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [selectedTopic, setSelectedTopic] = useState(null);
-
+  const { theme } = useTheme()
   useEffect(() => {
     dispatch(fetchFAQs());
   }, [dispatch]);
@@ -17,7 +18,9 @@ export default function Faqs() {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
-  if (loading) return <div>Loading FAQs...</div>;
+  if (loading) return <div>
+    <LoadingSpinner />
+  </div>;
   if (error) return <div className="text-error">Error: {error}</div>;
 
   if (!selectedTopic) {
@@ -29,7 +32,7 @@ export default function Faqs() {
             <button
               key={topic._id}
               onClick={() => setSelectedTopic(topic)}
-              className="p-4 bg-surface hover:bg-surface/80 border border-color rounded-lg text-left transition-colors text-sm"
+              className={`p-4 bg-background hover:bg-background/80 border border-color rounded-lg text-left transition-colors text-sm ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
             >
               {topic.logo_url && (
                 <img 
@@ -71,7 +74,7 @@ export default function Faqs() {
         {selectedTopic.questions.map((qna, index) => (
           <div key={index} className="border rounded-lg overflow-hidden border-color">
             <button
-              className="flex justify-between items-center w-full p-4 text-left bg-surface hover:bg-surface/80 transition-colors"
+              className={`flex justify-between items-center w-full p-4 text-left bg-background hover:bg-background/80 transition-colors border-b border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
               onClick={() => toggleQuestion(index)}
             >
               <span className="font-medium text-primary">{qna.question}</span>

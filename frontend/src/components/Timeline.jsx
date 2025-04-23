@@ -80,7 +80,7 @@ export default function Timeline() {
             <Tooltip content={<CustomTooltip />} />
             <Bar 
               dataKey="count" 
-              fill="#3B82F6"
+              fill="#8B5CF6"
               radius={isMobile ? [2, 2, 0, 0] : [4, 4, 0, 0]} // Smaller radius on mobile
             />
           </BarChart>

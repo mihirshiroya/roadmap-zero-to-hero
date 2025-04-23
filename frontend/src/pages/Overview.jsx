@@ -22,12 +22,14 @@ import { Card, CardHeader, CardTitle, CardContent } from "../ui/Card";
 import { CheckCircle } from 'lucide-react';
 import Button from '../ui/Button';
 import { allProjects } from './Projects';
+import { useTheme } from "../context/ThemeContext"
 
 export default function Overview() {
   const dispatch = useDispatch();
   const { roadmaps, loading, error } = useSelector((state) => state.roadmaps);
   const navigate = useNavigate();
   const [selectedTopic, setSelectedTopic] = useState(null);
+  const { theme } = useTheme()
   
   // Memoize the project selection
   const projects = useMemo(() => {
@@ -97,10 +99,10 @@ export default function Overview() {
                     to={`/roadmaps/${roadmap._id}`}
                     className="block"
                   >
-                    <Card className="hover:border-primary transition-colors bg-surface border-color">
+                    <Card className={`hover:border-primary transition-colors bg-background border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
                       <CardHeader>
                         <div className="flex items-center gap-4">
-                          <div className="bg-surface/20 p-2 rounded-lg border border-color">
+                          <div className="bg-background/20 p-2 rounded-lg border border-color">
                             {roadmap.logo_url ? (
                               <img 
                                 src={roadmap.logo_url} 
@@ -156,7 +158,7 @@ export default function Overview() {
               {topics.map((topic) => (
                 <div 
                   key={topic.id}
-                  className="bg-surface border border-color rounded-lg p-6 transition-colors"
+                  className={`bg-background border border-color rounded-lg p-6 transition-colors ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
                 >
                   <div className="text-3xl mb-2">{topic.icon}</div>
                   <h3 className="text-lg font-medium text-primary">{topic.name}</h3>
@@ -176,8 +178,8 @@ export default function Overview() {
             <h2 className="text-lg font-semibold text-primary">Recommended Projects</h2>
             <ul role="list" className="mt-3 grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-3">
               {projects.map((project) => (
-                <li key={project.id} className="col-span-1 flex rounded-lg group">
-                  <div className="flex flex-1 items-center justify-between truncate rounded-lg border border-color bg-surface hover:border-primary transition-colors">
+                <li key={project.id} className="col-span-1 flex rounded-lg group bg-background">
+                  <div className="flex flex-1 items-center justify-between truncate rounded-lg bg-background border border-color hover:border-primary transition-colors">
                     <div className="flex-1 min-w-0 px-4 py-2">
                       <h3 className="text-sm font-medium text-primary truncate">{project.title}</h3>
                       <p className="mt-1 text-sm text-secondary overflow-hidden">
