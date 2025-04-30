@@ -32,7 +32,7 @@ export default function Faqs() {
             <button
               key={topic._id}
               onClick={() => setSelectedTopic(topic)}
-              className={`p-4 bg-background hover:bg-background/80 border border-color rounded-lg text-left transition-colors text-sm ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
+              className={`p-4 bg-background hover:bg-background/80 border border-color rounded-lg text-left transition-colors text-sm ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
             >
               {topic.logo_url && (
                 <img 
@@ -74,7 +74,7 @@ export default function Faqs() {
         {selectedTopic.questions.map((qna, index) => (
           <div key={index} className="border rounded-lg overflow-hidden border-color">
             <button
-              className={`flex justify-between items-center w-full p-4 text-left bg-background hover:bg-background/80 transition-colors border-b border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
+              className={`flex justify-between items-center w-full p-4 text-left bg-background hover:bg-background/80 transition-colors border-b border-color ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
               onClick={() => toggleQuestion(index)}
             >
               <span className="font-medium text-primary">{qna.question}</span>

@@ -112,7 +112,7 @@ const Roadmaps = () => {
               to={`/roadmaps/${roadmap._id}`}
               className="block"
             >
-              <Card className={`hover:border-primary transition-colors  dark:bg-background/80 border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
+              <Card className={`hover:border-primary transition-colors  dark:bg-background/80 border-color ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <div className="bg-background/20 p-2 rounded-lg border border-color">

@@ -140,7 +140,7 @@ const RoadmapDetail = () => {
                 const isExpanded = expandedSteps.has(step.id)
 //bg-gradient-to-r from-gray-100 to-gray-200
                 return (
-                  <div key={step.id} className={`rounded-lg border border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
+                  <div key={step.id} className={`rounded-lg border border-color ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
                     <div
                       className={`relative cursor-pointer p-4 md:p-6 transition-colors duration-200 ${
                         isLocked 

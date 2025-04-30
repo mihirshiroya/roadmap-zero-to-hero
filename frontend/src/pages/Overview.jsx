@@ -99,7 +99,7 @@ export default function Overview() {
                     to={`/roadmaps/${roadmap._id}`}
                     className="block"
                   >
-                    <Card className={`hover:border-primary transition-colors bg-background border-color ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
+                    <Card className={`hover:border-primary transition-colors bg-background border-color ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}>
                       <CardHeader>
                         <div className="flex items-center gap-4">
                           <div className="bg-background/20 p-2 rounded-lg border border-color">
@@ -158,7 +158,7 @@ export default function Overview() {
               {topics.map((topic) => (
                 <div 
                   key={topic.id}
-                  className={`bg-background border border-color rounded-lg p-6 transition-colors ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
+                  className={`bg-background border border-color rounded-lg p-6 transition-colors ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
                 >
                   <div className="text-3xl mb-2">{topic.icon}</div>
                   <h3 className="text-lg font-medium text-primary">{topic.name}</h3>

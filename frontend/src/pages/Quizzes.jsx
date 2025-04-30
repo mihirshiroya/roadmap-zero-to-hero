@@ -71,7 +71,7 @@ export default function Quizzes() {
           <button
             key={topic.id}
             onClick={() => handleTopicSelect(topic)}
-            className={`bg-background border border-color rounded-lg p-6 hover:border-primary transition-colors text-left ${theme === "dark" ? "bg-gradient-to-r from-gray-900 via-gray-800 to-black" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
+            className={`bg-background border border-color rounded-lg p-6 hover:border-primary transition-colors text-left ${theme === "dark" ? "bg-gradient-to-br from-[#0f0f0f] via-[#1e1e2f] to-[#000000]" : "bg-gradient-to-r from-gray-100 to-gray-200"}`}
           >
             <div className="text-3xl mb-2">{topic.icon}</div>
             <h3 className="text-lg font-medium text-primary">{topic.name}</h3>
