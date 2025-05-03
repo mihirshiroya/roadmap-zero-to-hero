@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { format } from "date-fns"
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from "recharts"
 import { fetchTimelineData } from "../Slicers/analyticsSlice"
+import LoadingSpinner from "./LoadingSpinner"
 
 export default function Timeline() {
   const dispatch = useDispatch()
@@ -36,7 +37,9 @@ export default function Timeline() {
       count: item.count,
     }))
 
-  if (loading) return <div className="flex justify-center items-center h-64">Loading timeline...</div>
+  if (loading) return <div className="flex justify-center items-center h-64">
+  <LoadingSpinner/>
+  </div>
   if (error) return <div className="text-red-500">Error: {error}</div>
   if (chartData.length === 0) return <div className="flex justify-center items-center h-64 text-gray-500">No completion data available for this period</div>
 
